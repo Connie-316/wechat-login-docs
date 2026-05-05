@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>微信一键登录 · 产品文档中心</title>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var date = new Date().toISOString().slice(0,10).replace(/-/g,'');
+            document.querySelectorAll('a.card').forEach(function(card) {
+                var href = card.getAttribute('href');
+                if (href && href.endsWith('.html')) {
+                    href = href.replace(/\?.*$/, '');
+                    card.setAttribute('href', href + '?v=' + date);
+                }
+            });
+        });
+    </script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+            min-height: 100vh;
+            color: #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .container {
+            max-width: 800px;
+            width: 90%;
+            padding: 48px 0;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+        .header .icon {
+            width: 64px; height: 64px;
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            border-radius: 16px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            margin-bottom: 16px;
+            box-shadow: 0 8px 32px rgba(34,197,94,0.3);
+        }
+        .header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, #4ade80, #22c55e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .header p {
+            color: #94a3b8;
+            font-size: 15px;
+        }
+        .cards {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 32px;
+        }
+        a.card {
+            display: block;
+            background: rgba(30, 41, 59, 0.8);
+            border: 1px solid rgba(71, 85, 105, 0.4);
+            border-radius: 16px;
+            padding: 28px 24px;
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        a.card:hover {
+            border-color: rgba(34,197,94,0.6);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 32px rgba(34,197,94,0.15);
+        }
+        a.card .card-icon {
+            width: 44px; height: 44px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            margin-bottom: 16px;
+        }
+        a.card .card-icon.green { background: rgba(34,197,94,0.15); }
+        a.card .card-icon.blue { background: rgba(59,130,246,0.15); }
+        a.card .card-icon.purple { background: rgba(139,92,246,0.15); }
+        a.card .card-icon.amber { background: rgba(245,158,11,0.15); }
+        a.card h3 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: #f1f5f9;
+        }
+        a.card .desc {
+            font-size: 13px;
+            color: #94a3b8;
+            line-height: 1.5;
+        }
+        a.card .version {
+            position: absolute;
+            top: 12px; right: 12px;
+            font-size: 11px;
+            color: #64748b;
+            background: rgba(15,23,42,0.6);
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+        .full-width {
+            grid-column: 1 / -1;
+        }
+        .footer {
+            text-align: center;
+            color: #475569;
+            font-size: 12px;
+            margin-top: 24px;
+            padding-top: 24px;
+            border-top: 1px solid rgba(71,85,105,0.3);
+        }
+        .footer a {
+            color: #64748b;
+            text-decoration: none;
+        }
+        .footer a:hover {
+            color: #4ade80;
+        }
+        @media (max-width: 600px) {
+            .cards { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="icon">💬</div>
+            <h1>微信一键登录</h1>
+            <p>启泰集采商城 · 产品文档中心</p>
+        </div>
+
+        <div class="cards">
+            <a class="card" href="prd.html">
+                <span class="version">v1.11</span>
+                <div class="card-icon green">📋</div>
+                <h3>PRD 产品需求文档</h3>
+                <p class="desc">微信一键登录完整需求规格，含15章全流程设计、认证引导、下单拦截等</p>
+            </a>
+            <a class="card" href="prototype.html">
+                <span class="version">v1.11</span>
+                <div class="card-icon blue">🎨</div>
+                <h3>PC端交互原型</h3>
+                <p class="desc">登录页、认证选择弹窗、下单拦截弹窗等完整交互原型</p>
+            </a>
+            <a class="card" href="review-log.html">
+                <span class="version">v1.0</span>
+                <div class="card-icon purple">📝</div>
+                <h3>版本核查记录</h3>
+                <p class="desc">v1.0~v1.11 全部版本迭代记录、审查日志与维护规范</p>
+            </a>
+            <a class="card full-width" href="https://connie-316.github.io/enterprise-auth-docs/" target="_blank" style="border-color: rgba(34,197,94,0.3);">
+                <div class="card-icon amber">🔗</div>
+                <h3>企业认证 · 文档中心</h3>
+                <p class="desc">配套项目：企业认证PRD、PC端/小程序端原型、使用指南</p>
+            </a>
+        </div>
+
+        <div class="footer">
+            <p>启泰集采商城 · 产品文档 &nbsp;|&nbsp; 更新日期：2026-05-05 &nbsp;|&nbsp; <a href="https://github.com/Connie-316/wechat-login-docs" target="_blank">GitHub</a></p>
+        </div>
+    </div>
+</body>
+</html>

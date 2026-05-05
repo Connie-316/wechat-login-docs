@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>核查记录 · 微信一键登录 v1.0~v1.11</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+            background: #0f172a;
+            color: #e2e8f0;
+            line-height: 1.7;
+        }
+        .container { max-width: 960px; margin: 0 auto; padding: 40px 24px; }
+        h1 { font-size: 28px; margin-bottom: 8px; color: #4ade80; }
+        h2 { font-size: 22px; margin: 36px 0 16px; padding-bottom: 8px; border-bottom: 1px solid #334155; color: #f1f5f9; }
+        h3 { font-size: 17px; margin: 24px 0 12px; color: #cbd5e1; }
+        .meta { color: #94a3b8; font-size: 14px; margin-bottom: 32px; }
+        table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 14px; }
+        th { background: #1e293b; color: #94a3b8; font-weight: 600; text-align: left; padding: 10px 12px; border-bottom: 2px solid #334155; }
+        td { padding: 10px 12px; border-bottom: 1px solid #1e293b; }
+        tr:hover td { background: rgba(30,41,59,0.5); }
+        p { margin: 8px 0; }
+        strong { color: #f1f5f9; }
+        hr { border: none; border-top: 1px solid #334155; margin: 32px 0; }
+        blockquote { border-left: 3px solid #22c55e; padding: 12px 16px; margin: 16px 0; background: rgba(34,197,94,0.08); border-radius: 0 8px 8px 0; color: #cbd5e1; }
+        .badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 12px; font-weight: 600; }
+        .badge-red { background: rgba(239,68,68,0.2); color: #fca5a5; }
+        .badge-yellow { background: rgba(234,179,8,0.2); color: #fde047; }
+        .badge-green { background: rgba(34,197,94,0.2); color: #4ade80; }
+        .back-link { display: inline-block; margin-bottom: 24px; color: #4ade80; text-decoration: none; font-size: 14px; }
+        .back-link:hover { text-decoration: underline; }
+        .checklist { list-style: none; padding: 0; }
+        .checklist li { padding: 6px 0; padding-left: 28px; position: relative; }
+        .checklist li::before { content: "☐"; position: absolute; left: 0; color: #64748b; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <a class="back-link" href="index.html">← 返回文档中心</a>
+
+    <h1>核查记录 — 微信登录功能PRD 版本迭代与审查日志</h1>
+    <div class="meta">
+        <p>关联PRD：PRD_微信一键登录_v1.11.html &nbsp;|&nbsp; 关联原型：原型_登录页_最终版.html &nbsp;|&nbsp; 当前最新版本：<strong>v1.11</strong> &nbsp;|&nbsp; 累计迭代：12次</p>
+    </div>
+
+    <h2>一、版本总览速查表</h2>
+    <table>
+        <thead><tr><th>版本</th><th>日期</th><th>迭代类型</th><th>问题数</th><th>核心变更摘要</th><th>审查状态</th></tr></thead>
+        <tbody>
+            <tr><td>v1.0</td><td>04-21</td><td>初始创建</td><td>-</td><td>从合并PRD独立拆分，补充完整页面说明与交互细节</td><td>基线版</td></tr>
+            <tr><td>v1.1</td><td>04-21</td><td>功能补充</td><td>-</td><td>补充异常降级方案(7种)；接口幂等性(5个)；埋点需求(11个)</td><td>功能补全</td></tr>
+            <tr><td>v1.2</td><td>04-24</td><td>功能补充</td><td>-</td><td>小程序端完整说明；openid/unionid存储机制；unionid降级策略</td><td>功能补全</td></tr>
+            <tr><td>v1.3</td><td>04-24</td><td>功能完善</td><td>-</td><td>登录方式互切规范；多端打通注意事项；验收标准完善</td><td>功能补全</td></tr>
+            <tr><td>v1.4</td><td>04-24</td><td>强化标注</td><td>-</td><td>阻塞项醒目标注；PC端先上线逻辑；开发Checklist；开发提醒专节</td><td>功能补全</td></tr>
+            <tr><td><strong>v1.5</strong></td><td><strong>04-27</strong></td><td><strong>五维扫描</strong></td><td><strong>5</strong></td><td>callback接口HTTP方法统一POST；悬空段落移入第六章；版本历史修正"7种"；章节编号规范化(8~14章)；附录引用格式统一</td><td><span class="badge badge-green">✅ 零遗留</span></td></tr>
+            <tr><td><strong>v1.6</strong></td><td><strong>04-27</strong></td><td><strong>六维PM+Dev审查</strong></td><td><strong>4</strong></td><td>原型title版本号同步v1.5；最后更新日期同步2026-04-27；非标引用格式清理；历史文件v1.0删除</td><td><span class="badge badge-green">✅ 零遗留</span></td></tr>
+            <tr><td><strong>v1.7</strong></td><td><strong>04-27</strong></td><td><strong>八维深度全量审查</strong></td><td><strong>2</strong></td><td>原型title再次滞后→3处统一v1.7；产品命名跨文档不统一→统一为"数智聚模"</td><td><span class="badge badge-green">✅ 零遗留</span></td></tr>
+            <tr><td><strong>v1.8</strong></td><td><strong>04-27</strong></td><td><strong>开发前置条件深度补全</strong></td><td><strong>6</strong></td><td>新增8.6分端依赖矩阵(PC端8项+小程序端7项)；新增8.7域名配置指南；新增8.8安全规范；新增8.9联调方案(17步)；原型开发提示4条→7条</td><td><span class="badge badge-green">✅ 零遗留</span></td></tr>
+            <tr><td><strong>v1.9</strong></td><td><strong>04-27</strong></td><td><strong>九维深度终审</strong></td><td><strong>1</strong></td><td>.env配置示例语法错误修复(WE CALLBACK→WECHAT_CALLBACK)</td><td><span class="badge badge-green">✅ 零遗留·最终交付版</span></td></tr>
+            <tr><td><strong>v1.10</strong></td><td><strong>04-27</strong></td><td><strong>十轮核查+建档</strong></td><td><strong>1</strong></td><td>原型版本号滞后(v1.8→v1.10同步3处)；新建本核查记录文档</td><td><span class="badge badge-green">✅ 零遗留·最终交付版</span></td></tr>
+            <tr><td><strong>v1.11</strong></td><td><strong>05-05</strong></td><td><strong>认证引导+下单拦截</strong></td><td><strong>-</strong></td><td>新增第十五章"登录后认证引导"（15.1认证选择弹窗/15.2下单拦截/15.3买家中心入口/15.4认证状态流转）；用户表新增auth_status字段；原型新增⑦认证选择弹窗+⑧下单拦截弹窗</td><td><span class="badge badge-green">✅ 零遗留</span></td></tr>
+        </tbody>
+    </table>
+
+    <h2>二、重复性问题追踪（模式识别）</h2>
+    <h3>⚠️ 高频复发问题 TOP 3</h3>
+    <table>
+        <thead><tr><th>排名</th><th>问题模式</th><th>出现次数</th><th>根因分析</th><th>固化对策</th></tr></thead>
+        <tbody>
+            <tr><td><strong>1</strong></td><td><strong>原型版本号滞后</strong></td><td>3次 (v1.6/v1.7/v1.10)</td><td>升级流程中缺少"原型同步"步骤</td><td>每次升级版本号时必须同时修改原型HTML中的3处位置</td></tr>
+            <tr><td><strong>2</strong></td><td><strong>章节编号引用不规范</strong></td><td>2次 (v1.5/v1.6)</td><td>早期未统一编号规范</td><td>统一为中文数字格式（第八章/第九章等）</td></tr>
+            <tr><td><strong>3</strong></td><td><strong>版本历史中数值与正文不一致</strong></td><td>2次 (v1.5/v1.8)</td><td>版本历史编写时未严格对照正文</td><td>每轮追加版本历史时应从正文核实关键数值</td></tr>
+        </tbody>
+    </table>
+
+    <h2>三、文档成熟度指标趋势</h2>
+    <table>
+        <thead><tr><th>指标</th><th>v1.0-v1.4</th><th>v1.5</th><th>v1.8</th><th>v1.10</th><th>v1.11</th></tr></thead>
+        <tbody>
+            <tr><td>PRD总行数</td><td>~400行</td><td>~650行</td><td>~960行</td><td>~962行</td><td>~1100行</td></tr>
+            <tr><td>主章节</td><td>14章</td><td>14章</td><td>14章</td><td>14章</td><td><strong>15章</strong></td></tr>
+            <tr><td>接口定义</td><td>7个</td><td>9个</td><td>9个</td><td>9个</td><td>9个</td></tr>
+            <tr><td>异常降级场景</td><td>7种</td><td>7种</td><td>7种</td><td>7种</td><td>7种</td></tr>
+            <tr><td>埋点事件</td><td>11个</td><td>11个</td><td>11个</td><td>11个</td><td>11个</td></tr>
+            <tr><td>Linter错误</td><td>未检查</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+        </tbody>
+    </table>
+
+    <h2>四、后续维护规范</h2>
+    <h3>每次修改后的必做检查项（Checklist）</h3>
+    <ul class="checklist">
+        <li><strong>C1</strong>：PRD主版本号已升级（文档信息区 + 标题行）</li>
+        <li><strong>C2</strong>：版本历史已追加（含本轮所有发现和修复）</li>
+        <li><strong>C3</strong>：原型HTML 3处版本号已同步（&lt;title&gt; + 导航栏 + 覆盖说明）</li>
+        <li><strong>C4</strong>：本核查记录文档已追加本轮审查记录</li>
+        <li><strong>C5</strong>：Linter检查通过（0错误）</li>
+        <li><strong>C6</strong>：全文grep确认无非当前版本的旧版号残留</li>
+        <li><strong>C7</strong>：目录中仅保留最新版PRD + 原型 + 核查记录</li>
+    </ul>
+
+    <hr>
+    <p style="color:#64748b; font-size:12px; text-align:center;">本核查记录文档由第十轮审查（v1.10）创建，后续每轮审查均应在本文档末尾追加新的审查记录。最后更新：2026-05-05</p>
+</div>
+</body>
+</html>

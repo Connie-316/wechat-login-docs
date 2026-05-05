@@ -1,0 +1,1661 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>欢迎登录 - 数智聚模（PRD v1.11 原型）</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+            min-height: 100vh;
+            position: relative;
+            background: #f5f7fa;
+        }
+        
+        /* 顶部导航 */
+        .header {
+            background: #fff;
+            padding: 0 80px;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+            z-index: 10;
+        }
+        
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .logo-icon {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        
+        .logo-text {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1f2937;
+        }
+        
+        .header-divider {
+            width: 1px;
+            height: 20px;
+            background: #e5e7eb;
+        }
+        
+        .header-title {
+            font-size: 14px;
+            color: #6b7280;
+        }
+        
+        /* 主内容区 - 背景图 */
+        .main-container {
+            min-height: calc(100vh - 70px - 100px);
+            background: linear-gradient(135deg, #f0f4f8 0%, #e8eef5 50%, #f5f7fa 100%);
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 15%;
+            overflow: hidden;
+        }
+        
+        /* 左侧装饰背景 */
+        .main-container::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 60%;
+            background: 
+                /* 抽象几何装饰 */
+                radial-gradient(ellipse 80% 60% at 20% 40%, rgba(37, 99, 235, 0.08) 0%, transparent 60%),
+                radial-gradient(ellipse 60% 40% at 10% 70%, rgba(59, 130, 246, 0.06) 0%, transparent 50%),
+                linear-gradient(135deg, rgba(255,255,255,0.8) 0%, rgba(240,244,248,0.6) 100%);
+            pointer-events: none;
+        }
+        
+        /* 左侧文字内容 */
+        .left-content {
+            position: absolute;
+            left: 15%;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 5;
+        }
+        
+        .promo-title {
+            font-size: 32px;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 8px;
+            line-height: 1.3;
+        }
+        
+        .promo-title .highlight {
+            color: #2563eb;
+        }
+        
+        .promo-subtitle {
+            font-size: 14px;
+            color: #6b7280;
+            margin-bottom: 32px;
+        }
+        
+        .promo-features {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .promo-feature {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            color: #4b5563;
+        }
+        
+        .promo-feature::before {
+            content: '✓';
+            width: 18px;
+            height: 18px;
+            background: #2563eb;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 11px;
+            flex-shrink: 0;
+        }
+        
+        /* 右侧登录区 */
+        .login-section {
+            width: 380px;
+            position: relative;
+            z-index: 10;
+        }
+        
+        .login-box {
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08), 0 4px 12px rgba(0,0,0,0.04);
+            overflow: hidden;
+        }
+        
+        /* 登录方式Tab */
+        .login-tabs {
+            display: flex;
+            border-bottom: 1px solid #f3f4f6;
+        }
+        
+        .login-tab {
+            flex: 1;
+            padding: 16px 0;
+            text-align: center;
+            font-size: 14px;
+            color: #9ca3af;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.3s;
+            background: #fafbfc;
+            border: none;
+            font-weight: 500;
+        }
+        
+        .login-tab:hover {
+            color: #2563eb;
+            background: #f8fafc;
+        }
+        
+        .login-tab.active {
+            color: #2563eb;
+            background: #fff;
+            font-weight: 600;
+        }
+        
+        .login-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 20%;
+            right: 20%;
+            height: 2px;
+            background: #2563eb;
+        }
+        
+        /* 登录内容区 */
+        .login-content {
+            padding: 32px;
+        }
+        
+        /* 扫码登录 */
+        .qrcode-section {
+            text-align: center;
+        }
+        
+        .qrcode-title {
+            font-size: 15px;
+            color: #1f2937;
+            margin-bottom: 6px;
+            font-weight: 500;
+        }
+        
+        .qrcode-subtitle {
+            font-size: 12px;
+            color: #9ca3af;
+            margin-bottom: 24px;
+        }
+        
+        .qrcode-box {
+            width: 180px;
+            height: 180px;
+            margin: 0 auto 20px;
+            background: #fff;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* 真实二维码效果 */
+        .qrcode-pattern {
+            width: 160px;
+            height: 160px;
+            background: #fff;
+            position: relative;
+            background-image: 
+                /* 定位图案 - 左上 */
+                linear-gradient(to right, #000 0%, #000 100%),
+                linear-gradient(to bottom, #000 0%, #000 100%),
+                /* 定位图案 - 右上 */
+                linear-gradient(to right, #000 0%, #000 100%),
+                linear-gradient(to bottom, #000 0%, #000 100%),
+                /* 定位图案 - 左下 */
+                linear-gradient(to right, #000 0%, #000 100%),
+                linear-gradient(to bottom, #000 0%, #000 100%);
+            background-size: 
+                40px 8px, 8px 40px,
+                40px 8px, 8px 40px,
+                40px 8px, 8px 40px;
+            background-position: 
+                12px 12px, 12px 12px,
+                108px 12px, 140px 12px,
+                12px 108px, 12px 108px;
+            background-repeat: no-repeat;
+        }
+        
+        /* 二维码内部数据块 */
+        .qrcode-pattern::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image:
+                /* 随机数据点 */
+                radial-gradient(circle at 30% 30%, #000 2px, transparent 2px),
+                radial-gradient(circle at 45% 35%, #000 2px, transparent 2px),
+                radial-gradient(circle at 55% 28%, #000 2px, transparent 2px),
+                radial-gradient(circle at 65% 32%, #000 2px, transparent 2px),
+                radial-gradient(circle at 75% 38%, #000 2px, transparent 2px),
+                radial-gradient(circle at 35% 45%, #000 2px, transparent 2px),
+                radial-gradient(circle at 50% 48%, #000 2px, transparent 2px),
+                radial-gradient(circle at 60% 45%, #000 2px, transparent 2px),
+                radial-gradient(circle at 70% 50%, #000 2px, transparent 2px),
+                radial-gradient(circle at 80% 48%, #000 2px, transparent 2px),
+                radial-gradient(circle at 32% 58%, #000 2px, transparent 2px),
+                radial-gradient(circle at 48% 62%, #000 2px, transparent 2px),
+                radial-gradient(circle at 58% 58%, #000 2px, transparent 2px),
+                radial-gradient(circle at 72% 62%, #000 2px, transparent 2px),
+                radial-gradient(circle at 82% 58%, #000 2px, transparent 2px),
+                radial-gradient(circle at 38% 72%, #000 2px, transparent 2px),
+                radial-gradient(circle at 52% 75%, #000 2px, transparent 2px),
+                radial-gradient(circle at 65% 72%, #000 2px, transparent 2px),
+                radial-gradient(circle at 78% 75%, #000 2px, transparent 2px),
+                radial-gradient(circle at 88% 72%, #000 2px, transparent 2px),
+                /* 小方块 */
+                linear-gradient(to right, #000 0%, #000 100%),
+                linear-gradient(to right, #000 0%, #000 100%),
+                linear-gradient(to right, #000 0%, #000 100%),
+                linear-gradient(to right, #000 0%, #000 100%);
+            background-size:
+                100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%,
+                100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%,
+                100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%,
+                100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%,
+                20px 6px, 15px 6px, 25px 6px, 18px 6px;
+            background-position:
+                0 0, 0 0, 0 0, 0 0, 0 0,
+                0 0, 0 0, 0 0, 0 0, 0 0,
+                0 0, 0 0, 0 0, 0 0, 0 0,
+                0 0, 0 0, 0 0, 0 0, 0 0,
+                40px 85px, 70px 95px, 95px 88px, 125px 98px;
+            background-repeat: no-repeat;
+        }
+        
+        /* 微信logo */
+        .qrcode-pattern::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 36px;
+            height: 36px;
+            background: #fff;
+            border-radius: 4px;
+            box-shadow: 0 0 0 4px #fff;
+        }
+        
+        .qrcode-wechat-icon {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 28px;
+            height: 28px;
+            background: #07c160;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2;
+        }
+        
+        .qrcode-wechat-icon::before {
+            content: '💬';
+            font-size: 16px;
+        }
+        
+        .qrcode-refresh {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255,255,255,0.95);
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .qrcode-refresh.show {
+            display: flex;
+        }
+        
+        .qrcode-refresh-icon {
+            font-size: 28px;
+            color: #9ca3af;
+        }
+        
+        .qrcode-refresh-btn {
+            padding: 8px 20px;
+            background: #2563eb;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            font-size: 13px;
+            cursor: pointer;
+        }
+        
+        .qrcode-tip {
+            font-size: 12px;
+            color: #9ca3af;
+            margin-top: 8px;
+        }
+        
+        /* 微信登录按钮 */
+        .wechat-login-section {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px dashed #e5e7eb;
+        }
+        
+        .wechat-login-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 10px 24px;
+            background: #07c160;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .wechat-login-btn:hover {
+            background: #06ad56;
+        }
+        
+        /* 表单登录 */
+        .form-group {
+            margin-bottom: 16px;
+        }
+        
+        .form-input-wrapper {
+            position: relative;
+        }
+        
+        .form-input-icon {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9ca3af;
+            font-size: 14px;
+        }
+        
+        .form-input {
+            width: 100%;
+            height: 44px;
+            padding: 0 14px 0 42px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s;
+            background: #fafbfc;
+        }
+        
+        .form-input:hover {
+            border-color: #d1d5db;
+            background: #fff;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: #2563eb;
+            background: #fff;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+        
+        .verify-btn {
+            position: absolute;
+            right: 6px;
+            top: 50%;
+            transform: translateY(-50%);
+            height: 32px;
+            padding: 0 14px;
+            background: #eff6ff;
+            border: none;
+            border-radius: 4px;
+            color: #2563eb;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .verify-btn:hover {
+            background: #dbeafe;
+        }
+        
+        .verify-btn:disabled {
+            background: #f3f4f6;
+            color: #9ca3af;
+            cursor: not-allowed;
+        }
+        
+        .form-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            font-size: 13px;
+        }
+        
+        .remember-me {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: #6b7280;
+            cursor: pointer;
+        }
+        
+        .remember-me input {
+            width: 16px;
+            height: 16px;
+            accent-color: #2563eb;
+        }
+        
+        .forgot-password {
+            color: #2563eb;
+            text-decoration: none;
+            font-size: 13px;
+        }
+        
+        .forgot-password:hover {
+            text-decoration: underline;
+        }
+        
+        .login-btn {
+            width: 100%;
+            height: 44px;
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+            border: none;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 15px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 20px;
+        }
+        
+        .login-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+        }
+        
+        /* 其他登录方式 */
+        .other-login {
+            text-align: center;
+            padding-top: 16px;
+            border-top: 1px solid #f3f4f6;
+        }
+        
+        .other-login-title {
+            font-size: 12px;
+            color: #9ca3af;
+            margin-bottom: 12px;
+        }
+        
+        .social-login {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+        }
+        
+        .social-btn {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 8px 16px;
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            font-size: 13px;
+            color: #4b5563;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .social-btn:hover {
+            background: #f3f4f6;
+            border-color: #d1d5db;
+        }
+        
+        .social-btn.wechat:hover {
+            background: #f0fdf4;
+            border-color: #86efac;
+            color: #16a34a;
+        }
+        
+        /* 底部注册提示 */
+        .register-tip {
+            text-align: center;
+            padding: 16px;
+            background: #f0fdf4;
+            font-size: 13px;
+            color: #16a34a;
+        }
+        
+        .register-tip a {
+            color: #2563eb;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .register-tip a:hover {
+            text-decoration: underline;
+        }
+
+        /* 次要登录方式图标区 */
+        .alt-login-section {
+            padding-top: 16px;
+            border-top: 1px solid #f3f4f6;
+            margin-top: 4px;
+        }
+        .alt-login-title {
+            font-size: 12px;
+            color: #9ca3af;
+            text-align: center;
+            margin-bottom: 12px;
+        }
+        .alt-login-icons {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+        }
+        .alt-login-icon-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+            padding: 10px 16px;
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            min-width: 72px;
+            font-size: 12px;
+            color: #6b7280;
+        }
+        .alt-login-icon-btn:hover {
+            background: #f3f4f6;
+            border-color: #d1d5db;
+            color: #374151;
+        }
+        .alt-login-icon-btn .alt-icon {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+        .alt-login-icon-btn.wechat-alt .alt-icon {
+            background: #f0fdf4;
+            color: #07c160;
+        }
+        .alt-login-icon-btn.password-alt .alt-icon {
+            background: #eff6ff;
+            color: #2563eb;
+        }
+        .alt-login-icon-btn.sms-alt .alt-icon {
+            background: #fff7ed;
+            color: #ea580c;
+        }
+        
+        /* 底部 */
+        .footer {
+            background: #fff;
+            padding: 24px 48px;
+            text-align: center;
+            border-top: 1px solid #f3f4f6;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            margin-bottom: 12px;
+        }
+        
+        .footer-link {
+            font-size: 13px;
+            color: #6b7280;
+            text-decoration: none;
+        }
+        
+        .footer-link:hover {
+            color: #2563eb;
+        }
+        
+        .footer-copyright {
+            font-size: 12px;
+            color: #9ca3af;
+        }
+        
+        /* 隐藏/显示 */
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        /* 弹窗 */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+        
+        .modal-overlay.show {
+            display: flex;
+        }
+        
+        .modal {
+            background: #fff;
+            border-radius: 12px;
+            padding: 32px;
+            text-align: center;
+            width: 360px;
+        }
+        
+        .modal-icon {
+            width: 56px;
+            height: 56px;
+            background: #f0fdf4;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+            font-size: 28px;
+        }
+        
+        .modal-title {
+            font-size: 17px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #1f2937;
+        }
+        
+        .modal-desc {
+            color: #6b7280;
+            font-size: 14px;
+            margin-bottom: 24px;
+        }
+        
+        .modal-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+        }
+        
+        .modal-btn {
+            padding: 10px 24px;
+            border-radius: 6px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+        }
+        
+        .modal-btn.primary {
+            background: #07c160;
+            color: #fff;
+        }
+        
+        .modal-btn.primary:hover {
+            background: #06ad56;
+        }
+        
+        .modal-btn.default {
+            background: #fff;
+            color: #4b5563;
+            border: 1px solid #e5e7eb;
+        }
+        
+        .modal-btn.default:hover {
+            border-color: #d1d5db;
+            background: #f9fafb;
+        }
+
+        /* 认证选择弹窗 - 对齐小程序设计 */
+        .auth-modal-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .auth-modal-icon {
+            width: 52px;
+            height: 52px;
+            background: #eff6ff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 14px;
+            font-size: 26px;
+        }
+        .auth-modal-title {
+            font-size: 17px;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 6px;
+        }
+        .auth-modal-subtitle {
+            font-size: 13px;
+            color: #6b7280;
+        }
+        .auth-notice {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 10px 14px;
+            font-size: 12px;
+            color: #475569;
+            text-align: left;
+            margin-bottom: 16px;
+            line-height: 1.7;
+        }
+        .auth-notice-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 6px;
+            margin-bottom: 4px;
+        }
+        .auth-notice-item:last-child { margin-bottom: 0; }
+        .auth-notice-dot {
+            color: #2563eb;
+            font-weight: 600;
+            flex-shrink: 0;
+            line-height: 1.7;
+        }
+        .auth-option-card {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: #fff;
+            overflow: hidden;
+        }
+        .auth-option-card:hover {
+            border-color: #93c5fd;
+            background: #f8faff;
+        }
+        .auth-option-card.selected {
+            border-color: #2563eb;
+            background: #eff6ff;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.08);
+        }
+        .auth-option-card .check-mark {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 28px;
+            height: 28px;
+            background: #2563eb;
+            border-radius: 0 10px 0 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+        .auth-option-card .check-mark::after {
+            content: '✓';
+            color: #fff;
+            font-size: 13px;
+            font-weight: 600;
+        }
+        .auth-option-card.selected .check-mark {
+            opacity: 1;
+        }
+        .auth-option-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            flex-shrink: 0;
+            transition: all 0.2s;
+        }
+        .auth-option-icon.personal { background: #eff6ff; }
+        .auth-option-card.selected .auth-option-icon.personal { background: #dbeafe; }
+        .auth-option-icon.enterprise { background: #eff6ff; }
+        .auth-option-card.selected .auth-option-icon.enterprise { background: #dbeafe; }
+        .auth-option-body { flex: 1; text-align: left; }
+        .auth-option-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 3px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .auth-option-desc {
+            font-size: 12px;
+            color: #6b7280;
+            line-height: 1.5;
+        }
+        .auth-option-desc span {
+            color: #2563eb;
+            font-weight: 500;
+        }
+        .auth-recommend-tag {
+            display: inline-block;
+            padding: 1px 8px;
+            background: #2563eb;
+            color: #fff;
+            border-radius: 10px;
+            font-size: 10px;
+            font-weight: 500;
+            line-height: 18px;
+        }
+        .auth-confirm-btn {
+            width: 100%;
+            height: 44px;
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+            border: none;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 15px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 4px;
+        }
+        .auth-confirm-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+        }
+        .auth-confirm-btn:disabled {
+            background: #d1d5db;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        .auth-skip-link {
+            display: block;
+            text-align: center;
+            margin-top: 14px;
+            font-size: 13px;
+            color: #9ca3af;
+            cursor: pointer;
+            transition: color 0.15s;
+            background: none;
+            border: none;
+            padding: 4px 0;
+            width: 100%;
+        }
+        .auth-skip-link:hover {
+            color: #6b7280;
+        }
+
+        /* 下单认证拦截弹窗 */
+        .order-auth-tip {
+            background: #fef9ee;
+            border: 1px solid #fde68a;
+            border-radius: 8px;
+            padding: 12px 14px;
+            font-size: 12px;
+            color: #92400e;
+            text-align: left;
+            margin-bottom: 18px;
+            line-height: 1.6;
+        }
+        .auth-status-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 500;
+        }
+        .auth-status-badge.none { background: #fee2e2; color: #991b1b; }
+        .auth-status-badge.personal { background: #eff6ff; color: #1d4ed8; }
+        .auth-status-badge.enterprise { background: #fffbeb; color: #b45309; }
+    </style>
+</head>
+<body>
+    <!-- 原型演示说明导航栏 -->
+    <div id="protoNav" style="position:fixed;top:0;left:0;right:0;background:#001529;color:#fff;z-index:9999;padding:8px 16px;font-size:12px;">
+        <div style="display:flex;flex-wrap:wrap;gap:6px;align-items:center;">
+            <span style="font-weight:600;color:#faad14;margin-right:8px;">🎨 PRD v1.11 登录原型</span>
+            <span style="color:#8c8c8c;margin-right:8px;">演示路径：</span>
+            <button onclick="showProtoState('default')" style="padding:3px 10px;background:#1890ff;color:#fff;border:none;border-radius:3px;cursor:pointer;font-size:12px;">① 默认登录页</button>
+            <button onclick="showProtoState('wechatConfirm')" style="padding:3px 10px;background:#555;color:#fff;border:none;border-radius:3px;cursor:pointer;font-size:12px;">② 微信授权确认弹窗</button>
+            <button onclick="showProtoState('bindPhone')" style="padding:3px 10px;background:#555;color:#fff;border:none;border-radius:3px;cursor:pointer;font-size:12px;">③ 首次登录-绑定手机号（新用户）</button>
+            <button onclick="showProtoState('bindSuccess')" style="padding:3px 10px;background:#555;color:#fff;border:none;border-radius:3px;cursor:pointer;font-size:12px;">④ 绑定成功-登录完成（新用户）</button>
+            <button onclick="showProtoState('oldUserLogin')" style="padding:3px 10px;background:#555;color:#fff;border:none;border-radius:3px;cursor:pointer;font-size:12px;">⑤ 已绑定账号-直接登录（老用户）</button>
+            <button onclick="showProtoState('qrcodeExpire')" style="padding:3px 10px;background:#555;color:#fff;border:none;border-radius:3px;cursor:pointer;font-size:12px;">⑥ 二维码过期刷新</button>
+            <button onclick="showProtoState('authChoose')" style="padding:3px 10px;background:#7c3aed;color:#fff;border:none;border-radius:3px;cursor:pointer;font-size:12px;">⑦ 登录后-认证选择弹窗🆕</button>
+            <button onclick="showProtoState('orderAuthBlock')" style="padding:3px 10px;background:#dc2626;color:#fff;border:none;border-radius:3px;cursor:pointer;font-size:12px;">⑧ 下单-认证拦截弹窗🆕</button>
+            <span style="margin-left:12px;color:#52c41a;font-size:11px;">✅ 覆盖PRD v1.11全部PC端交互场景（含登录后认证引导+下单拦截）| 🆕 认证弹窗已对齐小程序设计（卡片选中态+说明文字+推荐标签）</span>
+        </div>
+        <div style="margin-top:4px;color:#8c8c8c;font-size:11px;">
+            💡 openid/unionid存储时机：微信授权回调服务端处理 → 写入wechat_auth表（platform: pc_web）→ 绑定手机号后关联user_id | 
+            🔄 各Tab底部展示其他两种登录方式图标，点击可切换 | 
+            🆕 v1.11新增：登录成功后弹出认证选择弹窗（个人/企业/暂不认证），下单时未认证则拦截引导 | 
+            ⚠️ 小程序端登录使用微信原生组件（wx.login），PC端原型不演示
+        </div>
+        <div style="margin-top:4px;background:#3a0a0a;border:1px solid #ff4d4f;border-radius:4px;padding:6px 10px;font-size:11px;color:#ff7875;">
+            🚨 <b>开发必读（开发启动前必须确认）</b>：<br>
+            ① PC端网站应用+小程序必须绑定到<b>同一微信开放平台主体账号</b>（否则unionid不一致，打通失败）<br>
+            ② 登录时必须同时存openid+unionid（缺unionid后上线端无法打通）<br>
+            ③ wechat_auth表结构第一期必须完整建好（含platform/unionid字段）<br>
+            ④ PC端需：网站应用AppID审核通过(2-5工作日) + 授权回调域配置 + HTTPS证书<br>
+            ⑤ 小程序端需：服务器域名(request合法域名)配置 + HTTPS证书<br>
+            ⑥ AppSecret严禁出现在前端代码中，仅服务端使用<br>
+            ⑦ 详见PRD第8章「多端分离开发账号打通注意事项」（8.5 Checklist + 8.6分端依赖矩阵 + 8.7域名配置 + 8.9联调方案）
+        </div>
+    </div>
+    <div style="height:60px;"></div>
+    <!-- 登录成功提示弹窗 -->
+    <div id="successToast" style="display:none;position:fixed;top:80px;left:50%;transform:translateX(-50%);background:#52c41a;color:#fff;padding:12px 24px;border-radius:8px;z-index:10000;font-size:14px;box-shadow:0 4px 12px rgba(0,0,0,0.15);">
+        ✅ 登录成功！正在跳转...
+    </div>
+    <!-- 顶部导航 -->
+    <header class="header">
+        <div class="header-left">
+            <div class="logo">
+                <div class="logo-icon">数</div>
+                <div class="logo-text">数智聚模</div>
+            </div>
+            <div class="header-divider"></div>
+            <div class="header-title">欢迎登录</div>
+        </div>
+    </header>
+    
+    <!-- 主内容区 -->
+    <main class="main-container">
+        <!-- 左侧文字内容 -->
+        <div class="left-content">
+            <h1 class="promo-title">
+                一站式采购 <span class="highlight">省钱更省心</span>
+            </h1>
+            <p class="promo-subtitle">模具行业一站式采购平台，为企业提供高效便捷的采购服务</p>
+            <div class="promo-features">
+                <div class="promo-feature">种类齐全，一站配齐</div>
+                <div class="promo-feature">服务专业，品质保障</div>
+                <div class="promo-feature">提供高品质，高性价比</div>
+            </div>
+        </div>
+        
+        <!-- 右侧登录区 -->
+        <section class="login-section">
+            <div class="login-box">
+                <!-- 登录方式Tab -->
+                <div class="login-tabs">
+                    <div class="login-tab active" onclick="switchTab('qrcode')">扫码登录</div>
+                    <div class="login-tab" onclick="switchTab('password')">密码登录</div>
+                    <div class="login-tab" onclick="switchTab('sms')">验证码登录</div>
+                </div>
+                
+                <!-- 登录内容 -->
+                <div class="login-content">
+                    <!-- 扫码登录 -->
+                    <div class="tab-content active" id="qrcodeTab">
+                        <div class="qrcode-section">
+                            <div class="qrcode-title">微信扫码登录</div>
+                            <div class="qrcode-subtitle">使用微信扫一扫，快速登录</div>
+                            <div class="qrcode-box">
+                                <div class="qrcode-pattern"></div>
+                                <div class="qrcode-wechat-icon"></div>
+                                <div class="qrcode-refresh" id="qrcodeRefresh">
+                                    <div class="qrcode-refresh-icon">🔄</div>
+                                    <button class="qrcode-refresh-btn" onclick="refreshQrcode()">刷新二维码</button>
+                                </div>
+                            </div>
+                            <div class="qrcode-tip">打开微信 > 发现 > 扫一扫</div>
+                        </div>
+                        <!-- 次要登录方式图标（扫码Tab下：密码登录 + 验证码登录） -->
+                        <div class="alt-login-section">
+                            <div class="alt-login-title">其他登录方式</div>
+                            <div class="alt-login-icons">
+                                <button class="alt-login-icon-btn password-alt" onclick="switchTabByName('password')" title="切换到密码登录">
+                                    <div class="alt-icon">🔑</div>
+                                    <span>密码登录</span>
+                                </button>
+                                <button class="alt-login-icon-btn sms-alt" onclick="switchTabByName('sms')" title="切换到验证码登录">
+                                    <div class="alt-icon">📱</div>
+                                    <span>验证码登录</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 密码登录 -->
+                    <div class="tab-content" id="passwordTab">
+                        <div class="form-group">
+                            <div class="form-input-wrapper">
+                                <span class="form-input-icon">👤</span>
+                                <input type="text" class="form-input" placeholder="请输入邮箱/手机号">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="form-input-wrapper">
+                                <span class="form-input-icon">🔒</span>
+                                <input type="password" class="form-input" placeholder="请输入密码">
+                            </div>
+                        </div>
+                        <div class="form-options">
+                            <label class="remember-me">
+                                <input type="checkbox" checked>
+                                <span>30天内免登录</span>
+                            </label>
+                            <a href="#" class="forgot-password">忘记密码？</a>
+                        </div>
+                        <button class="login-btn" onclick="login()">登 录</button>
+                        
+                        <!-- 次要登录方式图标（密码Tab下：微信扫码 + 验证码登录） -->
+                        <div class="alt-login-section">
+                            <div class="alt-login-title">其他登录方式</div>
+                            <div class="alt-login-icons">
+                                <button class="alt-login-icon-btn wechat-alt" onclick="showWechatModal('password')" title="微信扫码登录">
+                                    <div class="alt-icon">💬</div>
+                                    <span>微信扫码</span>
+                                </button>
+                                <button class="alt-login-icon-btn sms-alt" onclick="switchTabByName('sms')" title="切换到验证码登录">
+                                    <div class="alt-icon">📱</div>
+                                    <span>验证码登录</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 验证码登录 -->
+                    <div class="tab-content" id="smsTab">
+                        <div class="form-group">
+                            <div class="form-input-wrapper">
+                                <span class="form-input-icon">📱</span>
+                                <input type="text" class="form-input" placeholder="请输入手机号">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="form-input-wrapper">
+                                <span class="form-input-icon">🔢</span>
+                                <input type="text" class="form-input" placeholder="请输入验证码" style="padding-right: 90px;">
+                                <button class="verify-btn" onclick="sendCode(this)">获取验证码</button>
+                            </div>
+                        </div>
+                        <div class="form-options">
+                            <label class="remember-me">
+                                <input type="checkbox" checked>
+                                <span>30天内免登录</span>
+                            </label>
+                        </div>
+                        <button class="login-btn" onclick="login()">登 录</button>
+                        
+                        <!-- 次要登录方式图标（验证码Tab下：微信扫码 + 密码登录） -->
+                        <div class="alt-login-section">
+                            <div class="alt-login-title">其他登录方式</div>
+                            <div class="alt-login-icons">
+                                <button class="alt-login-icon-btn wechat-alt" onclick="showWechatModal('sms')" title="微信扫码登录">
+                                    <div class="alt-icon">💬</div>
+                                    <span>微信扫码</span>
+                                </button>
+                                <button class="alt-login-icon-btn password-alt" onclick="switchTabByName('password')" title="切换到密码登录">
+                                    <div class="alt-icon">🔑</div>
+                                    <span>密码登录</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 底部注册提示 -->
+                <div class="register-tip">
+                    还没有账号？<a href="#" onclick="goToRegister()">立即注册</a>，企业会员立享优惠
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <!-- 底部 -->
+    <footer class="footer">
+        <div class="footer-links">
+            <a href="#" class="footer-link">帮助中心</a>
+            <a href="#" class="footer-link">关于我们</a>
+            <a href="#" class="footer-link">联系我们</a>
+            <a href="#" class="footer-link">隐私政策</a>
+        </div>
+        <div class="footer-copyright">
+            Copyright © 2026 数智聚模 版权所有 | 粤ICP备XXXXXXXX号
+        </div>
+    </footer>
+    
+    <!-- 微信登录确认弹窗（扫码Tab触发：微信快捷登录 / 密码或验证码Tab触发：微信登录按钮） -->
+    <div class="modal-overlay" id="wechatModal">
+        <div class="modal">
+            <div class="modal-icon">💬</div>
+            <h3 class="modal-title" id="wechatModalTitle">微信快捷登录</h3>
+            <p class="modal-desc">即将跳转至微信授权页面，请确认是否继续？</p>
+            <div style="background:#f0f5ff;border:1px solid #adc6ff;border-radius:6px;padding:8px 12px;font-size:12px;color:#2f54eb;text-align:left;margin-bottom:16px;">
+                📌 授权后服务端将获取 openid + unionid 并存入 wechat_auth 表（platform: pc_web）
+            </div>
+            <div class="modal-actions">
+                <button class="modal-btn default" onclick="closeWechatModal()">取消</button>
+                <button class="modal-btn primary" onclick="confirmWechatLogin()">确认登录</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 首次微信登录 - 绑定手机号弹窗（新用户分支：unionid未绑定任何账号时触发） -->
+    <div class="modal-overlay" id="bindPhoneModal">
+        <div class="modal" style="width: 420px;">
+            <div style="text-align: right; margin-bottom: -8px;"><button onclick="closeBindPhoneModal()" style="background:none;border:none;font-size:18px;cursor:pointer;color:#9ca3af;">✕</button></div>
+            <div class="modal-icon">📱</div>
+            <h3 class="modal-title">首次微信登录</h3>
+            <p class="modal-desc">请绑定手机号完成注册</p>
+            <div style="background:#fffbe6;border:1px solid #ffe58f;border-radius:6px;padding:8px 12px;font-size:12px;color:#d48806;text-align:left;margin-bottom:16px;">
+                ⚡ 此步骤触发条件：服务端收到微信回调后，查询 wechat_auth 表，该 unionid 未绑定任何账号<br>
+                📝 绑定后：写入 wechat_auth（user_id + openid + unionid + platform: pc_web），签发 JWT Token
+            </div>
+            <div style="text-align: left; margin-bottom: 20px;">
+                <div style="margin-bottom: 16px;">
+                    <label style="font-size: 13px; color: #6b7280; display: block; margin-bottom: 6px;">手机号</label>
+                    <input type="text" id="bindPhone" placeholder="请输入11位手机号" maxlength="11" style="width: 100%; height: 44px; padding: 0 14px; border: 1px solid #e5e7eb; border-radius: 8px; font-size: 14px; background: #fafbfc;">
+                </div>
+                <div style="margin-bottom: 4px;">
+                    <label style="font-size: 13px; color: #6b7280; display: block; margin-bottom: 6px;">验证码</label>
+                    <div style="display: flex; gap: 8px;">
+                        <input type="text" id="bindCode" placeholder="请输入验证码" maxlength="6" style="flex: 1; height: 44px; padding: 0 14px; border: 1px solid #e5e7eb; border-radius: 8px; font-size: 14px; background: #fafbfc;">
+                        <button class="verify-btn-bind" onclick="sendBindCode(this)" style="height: 44px; padding: 0 14px; background: #eff6ff; border: 1px solid #e5e7eb; border-radius: 8px; color: #2563eb; font-size: 13px; cursor: pointer; white-space: nowrap;">获取验证码</button>
+                    </div>
+                </div>
+            </div>
+            <button class="login-btn" onclick="submitBindPhone()" style="width: 100%; margin-bottom: 0;">完成绑定</button>
+            <div style="font-size: 12px; color: #9ca3af; margin-top: 12px; text-align: center;">微信昵称和头像将自动获取，无需手动填写</div>
+        </div>
+    </div>
+    
+    <!-- 老用户直接登录成功提示（unionid已绑定账号时的分支） -->
+    <div class="modal-overlay" id="oldUserModal">
+        <div class="modal">
+            <div class="modal-icon" style="background:#f0f5ff;">✅</div>
+            <h3 class="modal-title">登录成功</h3>
+            <p class="modal-desc" style="color:#1890ff;">已检测到此微信号已绑定账号，直接登录成功<br><span style="font-size:12px;color:#9ca3af;">（服务端通过 unionid 匹配到已有 user_id，签发 JWT Token）</span></p>
+            <div class="modal-actions">
+                <button class="modal-btn primary" onclick="closeOldUserModal()" style="background:#1890ff;">进入商城</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 🆕 登录后认证选择弹窗（登录即注册后首次弹出，对齐小程序设计） -->
+    <div class="modal-overlay" id="authChooseModal">
+        <div class="modal" style="width: 460px; padding: 28px;">
+            <div style="text-align: right; margin-bottom: -4px;"><button onclick="closeAuthChooseModal()" style="background:none;border:none;font-size:18px;cursor:pointer;color:#9ca3af;">✕</button></div>
+            <!-- 头部：图标+标题 -->
+            <div class="auth-modal-header">
+                <div class="auth-modal-icon">🛡️</div>
+                <div class="auth-modal-title">您当前暂未认证</div>
+                <div class="auth-modal-subtitle">是否选择角色并立即认证？</div>
+            </div>
+            <!-- 说明文字区（对齐小程序弹窗说明） -->
+            <div class="auth-notice">
+                <div class="auth-notice-item"><span class="auth-notice-dot">1.</span><span>个人认证后可升级为"企业"用户，企业认证后不可降级为"个人"用户；</span></div>
+                <div class="auth-notice-item"><span class="auth-notice-dot">2.</span><span>选择后，您可以在【买家中心 - 认证管理】进行修改。</span></div>
+            </div>
+            <!-- 认证选项卡片 -->
+            <div style="margin-bottom: 14px;" id="authOptionsContainer">
+                <!-- 个人认证选项 -->
+                <div class="auth-option-card" id="authCardPersonal" onclick="selectAuthOption('personal')">
+                    <div class="check-mark"></div>
+                    <div class="auth-option-icon personal">👤</div>
+                    <div class="auth-option-body">
+                        <div class="auth-option-title">个人认证</div>
+                        <div class="auth-option-desc">适合个人采购，<span>快速认证即时生效</span></div>
+                    </div>
+                </div>
+                <!-- 企业认证选项（推荐） -->
+                <div class="auth-option-card" id="authCardEnterprise" onclick="selectAuthOption('enterprise')">
+                    <div class="check-mark"></div>
+                    <div class="auth-option-icon enterprise">🏢</div>
+                    <div class="auth-option-body">
+                        <div class="auth-option-title">企业认证 <span class="auth-recommend-tag">推荐</span></div>
+                        <div class="auth-option-desc">适合企业采购，<span>认证后享企业专属价与开票</span></div>
+                    </div>
+                </div>
+            </div>
+            <!-- 确认按钮（选中后激活） -->
+            <button class="auth-confirm-btn" id="authConfirmBtn" onclick="confirmAuthChoice()" disabled>请选择认证方式</button>
+            <!-- 稍后认证文字链接 -->
+            <button class="auth-skip-link" onclick="skipAuth()">稍后认证</button>
+        </div>
+    </div>
+
+    <!-- 🆕 下单时认证拦截弹窗（提交订单→用户未认证→弹出提示引导去认证，对齐小程序设计） -->
+    <div class="modal-overlay" id="orderAuthBlockModal">
+        <div class="modal" style="width: 440px; padding: 28px;">
+            <div style="text-align: right; margin-bottom: -4px;"><button onclick="closeOrderAuthBlock()" style="background:none;border:none;font-size:18px;cursor:pointer;color:#9ca3af;">✕</button></div>
+            <div class="auth-modal-header">
+                <div class="auth-modal-icon" style="background:#fef2f2;">🔒</div>
+                <div class="auth-modal-title" style="color:#dc2626;">需要完成认证</div>
+                <div class="auth-modal-subtitle">提交订单前需完成身份认证，请选择认证方式</div>
+            </div>
+            <div class="order-auth-tip">
+                ⚠️ 当前认证状态：<span class="auth-status-badge none">未认证</span><br>
+                根据平台规定，下单采购需先完成身份认证（个人或企业均可）
+            </div>
+            <div style="margin-bottom: 14px;" id="orderAuthOptionsContainer">
+                <div class="auth-option-card" id="orderAuthCardPersonal" onclick="selectOrderAuthOption('personal')">
+                    <div class="check-mark"></div>
+                    <div class="auth-option-icon personal">👤</div>
+                    <div class="auth-option-body">
+                        <div class="auth-option-title">个人认证</div>
+                        <div class="auth-option-desc"><span>快速认证，即时生效</span></div>
+                    </div>
+                </div>
+                <div class="auth-option-card" id="orderAuthCardEnterprise" onclick="selectOrderAuthOption('enterprise')">
+                    <div class="check-mark"></div>
+                    <div class="auth-option-icon enterprise">🏢</div>
+                    <div class="auth-option-body">
+                        <div class="auth-option-title">企业认证 <span class="auth-recommend-tag">推荐</span></div>
+                        <div class="auth-option-desc"><span>享企业专属价与开票</span></div>
+                    </div>
+                </div>
+            </div>
+            <div style="display:flex;gap:10px;">
+                <button class="modal-btn default" onclick="closeOrderAuthBlock()" style="flex:1;">取消</button>
+                <button class="auth-confirm-btn" id="orderAuthConfirmBtn" onclick="confirmOrderAuthChoice()" disabled style="flex:2;margin-top:0;background:linear-gradient(135deg,#dc2626 0%,#b91c1c 100%);">请选择认证方式</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // 当前登录来源（用于弹窗标题区分）
+        var loginSource = 'qrcode'; // 'qrcode' | 'password' | 'sms'
+
+        // 切换登录方式Tab（通过Tab点击）
+        function switchTab(type) {
+            const tabs = document.querySelectorAll('.login-tab');
+            const contents = document.querySelectorAll('.tab-content');
+            
+            tabs.forEach(tab => tab.classList.remove('active'));
+            contents.forEach(content => content.classList.remove('active'));
+            
+            event.target.classList.add('active');
+            document.getElementById(type + 'Tab').classList.add('active');
+        }
+
+        // 通过次要图标切换Tab（无event对象，按名称切换）
+        function switchTabByName(type) {
+            const tabs = document.querySelectorAll('.login-tab');
+            const contents = document.querySelectorAll('.tab-content');
+            
+            tabs.forEach(tab => tab.classList.remove('active'));
+            contents.forEach(content => content.classList.remove('active'));
+
+            // 按顺序：qrcode→index0, password→index1, sms→index2
+            var tabIndex = { 'qrcode': 0, 'password': 1, 'sms': 2 };
+            if (tabIndex[type] !== undefined) {
+                tabs[tabIndex[type]].classList.add('active');
+            }
+            var target = document.getElementById(type + 'Tab');
+            if (target) target.classList.add('active');
+        }
+        
+        // 发送验证码
+        function sendCode(btn) {
+            let count = 60;
+            btn.disabled = true;
+            btn.textContent = `${count}s`;
+            
+            const timer = setInterval(() => {
+                count--;
+                btn.textContent = `${count}s`;
+                if (count <= 0) {
+                    clearInterval(timer);
+                    btn.disabled = false;
+                    btn.textContent = '获取验证码';
+                }
+            }, 1000);
+        }
+        
+        // 账号密码/短信登录
+        function login() {
+            showSuccessToast('登录成功！');
+        }
+
+        // 显示登录成功提示
+        function showSuccessToast(msg) {
+            var toast = document.getElementById('successToast');
+            toast.textContent = '✅ ' + msg + ' 正在跳转...';
+            toast.style.display = 'block';
+            setTimeout(function() { toast.style.display = 'none'; }, 2500);
+        }
+        
+        // 显示微信登录弹窗（区分来源，设置正确的标题）
+        function showWechatModal(source) {
+            loginSource = source || 'qrcode';
+            var titleMap = {
+                'qrcode': '微信快捷登录',
+                'password': '微信登录',
+                'sms': '微信登录'
+            };
+            document.getElementById('wechatModalTitle').textContent = titleMap[loginSource] || '微信登录';
+            document.getElementById('wechatModal').classList.add('show');
+        }
+        
+        // 关闭微信登录弹窗
+        function closeWechatModal() {
+            document.getElementById('wechatModal').classList.remove('show');
+        }
+        
+        // 确认微信登录 → 分新用户/老用户两条路径演示
+        // 原型演示：点击后随机模拟"新用户（未绑定）"或"老用户（已绑定）"
+        // 实际逻辑：服务端回调后查 wechat_auth 表中 unionid 决定走哪条路径
+        var _demoIsNewUser = true; // 原型演示用，交替演示两条路径
+        function confirmWechatLogin() {
+            closeWechatModal();
+            if (_demoIsNewUser) {
+                // 新用户：unionid未绑定账号 → 弹出绑定手机号
+                _demoIsNewUser = false;
+                document.getElementById('bindPhoneModal').classList.add('show');
+            } else {
+                // 老用户：unionid已绑定账号 → 直接登录成功
+                _demoIsNewUser = true;
+                document.getElementById('oldUserModal').classList.add('show');
+            }
+        }
+        
+        // 关闭绑定手机号弹窗
+        function closeBindPhoneModal() {
+            document.getElementById('bindPhoneModal').classList.remove('show');
+            document.getElementById('bindPhone').value = '';
+            document.getElementById('bindCode').value = '';
+        }
+
+        // 关闭老用户登录成功弹窗 → 弹出认证选择
+        function closeOldUserModal() {
+            document.getElementById('oldUserModal').classList.remove('show');
+            // v1.11: 登录成功后弹出认证选择弹窗
+            document.getElementById('authChooseModal').classList.add('show');
+        }
+        
+        // 发送绑定验证码
+        function sendBindCode(btn) {
+            var phone = document.getElementById('bindPhone').value.trim();
+            if (!phone || !/^1\d{10}$/.test(phone)) {
+                alert('请输入正确的11位手机号');
+                return;
+            }
+            let count = 60;
+            btn.disabled = true;
+            btn.textContent = count + 's';
+            btn.style.color = '#9ca3af';
+            const timer = setInterval(() => {
+                count--;
+                btn.textContent = count + 's';
+                if (count <= 0) {
+                    clearInterval(timer);
+                    btn.disabled = false;
+                    btn.textContent = '获取验证码';
+                    btn.style.color = '#2563eb';
+                }
+            }, 1000);
+        }
+        
+        // 提交绑定手机号（新用户完成注册并登录）
+        function submitBindPhone() {
+            var phone = document.getElementById('bindPhone').value.trim();
+            var code = document.getElementById('bindCode').value.trim();
+            if (!phone || !/^1\d{10}$/.test(phone)) {
+                alert('请输入正确的11位手机号');
+                return;
+            }
+            if (!code || code.length !== 6) {
+                alert('请输入6位验证码');
+                return;
+            }
+            closeBindPhoneModal();
+            // v1.11: 绑定成功后弹出认证选择弹窗（而非直接跳转）
+            document.getElementById('authChooseModal').classList.add('show');
+        }
+        // =============================
+        // v1.11 认证选择弹窗交互（对齐小程序设计）
+        // =============================
+        var selectedAuthType = null; // 当前选中的认证类型
+
+        // 关闭认证选择弹窗
+        function closeAuthChooseModal() {
+            document.getElementById('authChooseModal').classList.remove('show');
+            resetAuthSelection();
+        }
+
+        // 重置选中状态
+        function resetAuthSelection() {
+            selectedAuthType = null;
+            document.getElementById('authCardPersonal').classList.remove('selected');
+            document.getElementById('authCardEnterprise').classList.remove('selected');
+            var btn = document.getElementById('authConfirmBtn');
+            btn.disabled = true;
+            btn.textContent = '请选择认证方式';
+        }
+
+        // 选择认证选项（点击卡片切换选中态）
+        function selectAuthOption(type) {
+            selectedAuthType = type;
+            // 清除所有选中
+            document.getElementById('authCardPersonal').classList.remove('selected');
+            document.getElementById('authCardEnterprise').classList.remove('selected');
+            // 设置当前选中
+            if (type === 'personal') {
+                document.getElementById('authCardPersonal').classList.add('selected');
+            } else if (type === 'enterprise') {
+                document.getElementById('authCardEnterprise').classList.add('selected');
+            }
+            // 激活确认按钮
+            var btn = document.getElementById('authConfirmBtn');
+            btn.disabled = false;
+            btn.textContent = type === 'personal' ? '个人认证' : '企业认证';
+        }
+
+        // 确认认证选择（点击确认按钮）
+        function confirmAuthChoice() {
+            if (!selectedAuthType) return;
+            closeAuthChooseModal();
+            if (selectedAuthType === 'personal') {
+                showSuccessToast('即将进入个人实名认证流程（e签宝）');
+            } else if (selectedAuthType === 'enterprise') {
+                showSuccessToast('即将进入企业认证流程（e签宝同步API）');
+            }
+        }
+
+        // 选择认证方式（登录后弹窗触发 - 保留兼容旧调用）
+        function chooseAuth(type) {
+            closeAuthChooseModal();
+            if (type === 'personal') {
+                showSuccessToast('即将进入个人实名认证流程（e签宝）');
+            } else if (type === 'enterprise') {
+                showSuccessToast('即将进入企业认证流程（e签宝同步API）');
+            }
+        }
+
+        // 稍后认证
+        function skipAuth() {
+            closeAuthChooseModal();
+            showSuccessToast('已跳过认证，进入商城首页');
+        }
+
+        // 下单拦截-选择认证选项（点击卡片切换选中态）
+        var orderSelectedAuthType = null;
+
+        function selectOrderAuthOption(type) {
+            orderSelectedAuthType = type;
+            document.getElementById('orderAuthCardPersonal').classList.remove('selected');
+            document.getElementById('orderAuthCardEnterprise').classList.remove('selected');
+            if (type === 'personal') {
+                document.getElementById('orderAuthCardPersonal').classList.add('selected');
+            } else if (type === 'enterprise') {
+                document.getElementById('orderAuthCardEnterprise').classList.add('selected');
+            }
+            var btn = document.getElementById('orderAuthConfirmBtn');
+            btn.disabled = false;
+            btn.textContent = type === 'personal' ? '个人认证' : '企业认证';
+        }
+
+        // 确认下单拦截的认证选择
+        function confirmOrderAuthChoice() {
+            if (!orderSelectedAuthType) return;
+            closeOrderAuthBlock();
+            if (orderSelectedAuthType === 'personal') {
+                showSuccessToast('即将进入个人实名认证流程（e签宝）');
+            } else if (orderSelectedAuthType === 'enterprise') {
+                showSuccessToast('即将进入企业认证流程（e签宝同步API）');
+            }
+        }
+
+        // 下单拦截-选择认证方式（兼容旧调用）
+        function chooseAuthFromOrder(type) {
+            closeOrderAuthBlock();
+            if (type === 'personal') {
+                showSuccessToast('即将进入个人实名认证流程（e签宝）');
+            } else if (type === 'enterprise') {
+                showSuccessToast('即将进入企业认证流程（e签宝同步API）');
+            }
+        }
+
+        // 关闭下单拦截弹窗
+        function closeOrderAuthBlock() {
+            document.getElementById('orderAuthBlockModal').classList.remove('show');
+            orderSelectedAuthType = null;
+            document.getElementById('orderAuthCardPersonal').classList.remove('selected');
+            document.getElementById('orderAuthCardEnterprise').classList.remove('selected');
+            var btn = document.getElementById('orderAuthConfirmBtn');
+            btn.disabled = true;
+            btn.textContent = '请选择认证方式';
+        }
+        
+        // 刷新二维码
+        function refreshQrcode() {
+            document.getElementById('qrcodeRefresh').classList.remove('show');
+            showSuccessToast('二维码已刷新，有效期5分钟');
+        }
+        
+        // 去注册
+        function goToRegister() {
+            alert('跳转到注册页面');
+        }
+        
+        // 模拟二维码过期（30秒后）
+        setTimeout(() => {
+            document.getElementById('qrcodeRefresh').classList.add('show');
+        }, 30000);
+
+        // =============================
+        // 原型导航栏演示状态控制
+        // =============================
+        function showProtoState(state) {
+            // 重置所有弹窗
+            document.getElementById('wechatModal').classList.remove('show');
+            document.getElementById('bindPhoneModal').classList.remove('show');
+            document.getElementById('oldUserModal').classList.remove('show');
+            document.getElementById('qrcodeRefresh').classList.remove('show');
+            document.getElementById('authChooseModal').classList.remove('show');
+            document.getElementById('orderAuthBlockModal').classList.remove('show');
+
+            // 更新导航栏按钮样式
+            var btns = document.querySelectorAll('#protoNav button');
+            btns.forEach(function(b) { b.style.background = '#555'; });
+            event.target.style.background = '#1890ff';
+
+            if (state === 'default') {
+                // 默认状态，无弹窗
+            } else if (state === 'wechatConfirm') {
+                loginSource = 'qrcode';
+                document.getElementById('wechatModalTitle').textContent = '微信快捷登录';
+                document.getElementById('wechatModal').classList.add('show');
+            } else if (state === 'bindPhone') {
+                document.getElementById('bindPhoneModal').classList.add('show');
+            } else if (state === 'bindSuccess') {
+                // v1.11: 绑定成功后弹出认证选择
+                document.getElementById('authChooseModal').classList.add('show');
+            } else if (state === 'oldUserLogin') {
+                document.getElementById('oldUserModal').classList.add('show');
+            } else if (state === 'qrcodeExpire') {
+                document.getElementById('qrcodeRefresh').classList.add('show');
+            } else if (state === 'authChoose') {
+                document.getElementById('authChooseModal').classList.add('show');
+            } else if (state === 'orderAuthBlock') {
+                document.getElementById('orderAuthBlockModal').classList.add('show');
+            }
+        }
+    </script>
+</body>
+</html>
